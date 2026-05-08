@@ -7,7 +7,7 @@ public class Client {
     private String email;
     private String telephone;
     private String adresse;
-    private String numeroPasseport;
+    private String numeroCarteIdentite;
     private String dateNaissance;
     private String statut;
 
@@ -15,14 +15,14 @@ public class Client {
     }
 
     public Client(long id, String nom, String prenom, String email, String telephone,
-                  String adresse, String numeroPasseport, String dateNaissance, String statut) {
+                  String adresse, String numeroCarteIdentite, String dateNaissance, String statut) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.telephone = telephone;
         this.adresse = adresse;
-        this.numeroPasseport = numeroPasseport;
+        this.numeroCarteIdentite = numeroCarteIdentite;
         this.dateNaissance = dateNaissance;
         this.statut = statut;
     }
@@ -75,12 +75,22 @@ public class Client {
         this.adresse = adresse;
     }
 
-    public String getNumeroPasseport() {
-        return numeroPasseport;
+    public String getNumeroCarteIdentite() {
+        return numeroCarteIdentite;
     }
 
+    public void setNumeroCarteIdentite(String numeroCarteIdentite) {
+        this.numeroCarteIdentite = numeroCarteIdentite;
+    }
+
+    @Deprecated
+    public String getNumeroPasseport() {
+        return numeroCarteIdentite;
+    }
+
+    @Deprecated
     public void setNumeroPasseport(String numeroPasseport) {
-        this.numeroPasseport = numeroPasseport;
+        this.numeroCarteIdentite = numeroPasseport;
     }
 
     public String getDateNaissance() {

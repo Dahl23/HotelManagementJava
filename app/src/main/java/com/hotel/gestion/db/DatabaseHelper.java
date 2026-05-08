@@ -213,15 +213,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long insertChambre(Chambre chambre) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("numero", chambre.getNumero());
-        values.put("type", chambre.getType());
-        values.put("prix_nuit", chambre.getPrixNuit());
-        values.put("capacite", chambre.getCapacite());
-        values.put("equipements", chambre.getEquipements());
-        values.put("disponible", chambre.isDisponible() ? 1 : 0);
-        return db.insert(TABLE_CHAMBRES, null, values);
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("numero", chambre.getNumero());
+            values.put("type", chambre.getType());
+            values.put("prix_nuit", chambre.getPrixNuit());
+            values.put("capacite", chambre.getCapacite());
+            values.put("equipements", chambre.getEquipements());
+            values.put("disponible", chambre.isDisponible() ? 1 : 0);
+            return db.insert(TABLE_CHAMBRES, null, values);
+        } catch (Exception exception) {
+            return -1L;
+        }
     }
 
     public List<Chambre> getChambres(String filter) {

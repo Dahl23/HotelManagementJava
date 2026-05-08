@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textAvailableRooms;
     private TextView textActiveReservations;
     private TextView textClients;
-    private TextView textCheckouts;
     private TextView textOccupationSummary;
     private BottomNavigationView bottomNavigationView;
 
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         textAvailableRooms = findViewById(R.id.textStatAvailableRooms);
         textActiveReservations = findViewById(R.id.textStatReservations);
         textClients = findViewById(R.id.textStatClients);
-        textCheckouts = findViewById(R.id.textStatCheckouts);
         textOccupationSummary = findViewById(R.id.textOccupationSummary);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
@@ -54,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         textAvailableRooms.setText(String.valueOf(stats.availableRooms));
         textActiveReservations.setText(String.valueOf(stats.activeReservations));
         textClients.setText(String.valueOf(stats.clients));
-        textCheckouts.setText(String.valueOf(stats.checkoutsToday));
         textOccupationSummary.setText(getString(
                 R.string.dashboard_occupation_format,
                 stats.occupationPercent,

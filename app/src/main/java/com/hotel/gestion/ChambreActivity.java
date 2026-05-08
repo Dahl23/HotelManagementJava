@@ -146,33 +146,37 @@ public class ChambreActivity extends AppCompatActivity {
             inputRoomType.setText("Simple", false);
 
             buttonSave.setOnClickListener(v -> {
-                clearErrors(layoutNumber, layoutType, layoutPrice, layoutCapacity, layoutEquipment);
+                try {
+                    clearErrors(layoutNumber, layoutType, layoutPrice, layoutCapacity, layoutEquipment);
 
-                boolean valid = true;
-                valid &= validateRequired(layoutNumber, editNumber);
-                valid &= validateRequired(layoutType, inputRoomType);
-                valid &= validatePositiveDecimal(layoutPrice, editPrice);
-                valid &= validatePositiveInteger(layoutCapacity, editCapacity);
+                    boolean valid = true;
+                    valid &= validateRequired(layoutNumber, editNumber);
+                    valid &= validateRequired(layoutType, inputRoomType);
+                    valid &= validatePositiveDecimal(layoutPrice, editPrice);
+                    valid &= validatePositiveInteger(layoutCapacity, editCapacity);
 
-                if (!valid) {
-                    return;
-                }
+                    if (!valid) {
+                        return;
+                    }
 
-                Chambre chambre = new Chambre();
-                chambre.setNumero(editNumber.getText().toString().trim());
-                chambre.setType(inputRoomType.getText().toString().trim());
-                chambre.setPrixNuit(Double.parseDouble(editPrice.getText().toString().trim()));
-                chambre.setCapacite(Integer.parseInt(editCapacity.getText().toString().trim()));
-                chambre.setEquipements(editEquipment.getText().toString().trim());
-                chambre.setDisponible(switchAvailable.isChecked());
+                    Chambre chambre = new Chambre();
+                    chambre.setNumero(editNumber.getText().toString().trim());
+                    chambre.setType(inputRoomType.getText().toString().trim());
+                    chambre.setPrixNuit(Double.parseDouble(editPrice.getText().toString().trim()));
+                    chambre.setCapacite(Integer.parseInt(editCapacity.getText().toString().trim()));
+                    chambre.setEquipements(editEquipment.getText().toString().trim());
+                    chambre.setDisponible(switchAvailable.isChecked());
 
-                long id = dbHelper.insertChambre(chambre);
-                if (id > 0) {
-                    Toast.makeText(this, getString(R.string.message_room_saved), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                    refreshRoomData();
-                } else {
-                    layoutNumber.setError(getString(R.string.message_room_duplicate));
+                    long id = dbHelper.insertChambre(chambre);
+                    if (id > 0) {
+                        Toast.makeText(this, getString(R.string.message_room_saved), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        refreshRoomData();
+                    } else {
+                        layoutNumber.setError(getString(R.string.message_room_duplicate));
+                        Toast.makeText(this, getString(R.string.message_room_save_failed), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception exception) {
                     Toast.makeText(this, getString(R.string.message_room_save_failed), Toast.LENGTH_SHORT).show();
                 }
             });
