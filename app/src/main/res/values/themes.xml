@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.HotelManager" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_navy</item>
+        <item name="colorPrimaryVariant">@color/primary_navy</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_blue</item>
+        <item name="android:colorBackground">@color/screen_background</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primary_navy</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="materialCardViewStyle">@style/HotelManagerCardView</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.HotelManager.MaterialAlertDialog</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="materialButtonStyle">@style/HotelManagerButton</item>
+    </style>
+
+    <!-- Card Styles -->
+    <style name="HotelManagerCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_lg</item>
+        <item name="strokeColor">@color/card_stroke</item>
+        <item name="strokeWidth">@dimen/card_stroke_width</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <!-- Dialog Theme -->
+    <style name="ThemeOverlay.HotelManager.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="backgroundTint">@color/screen_background</item>
+    </style>
+
+    <!-- Text Input Layout -->
+    <style name="HotelManagerTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeColor">@color/input_border</item>
+        <item name="boxStrokeWidth">@dimen/card_stroke_width</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_lg</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_lg</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_lg</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_lg</item>
+        <item name="hintTextColor">@color/input_hint</item>
+        <item name="helperTextTextColor">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/input_hint</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="HotelManagerButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/accent_blue</item>
+        <item name="cornerRadius">@dimen/corner_radius_lg</item>
+    </style>
+
+    <style name="HotelManagerButtonOutlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/corner_radius_lg</item>
+        <item name="strokeColor">@color/accent_blue</item>
+        <item name="android:textColor">@color/accent_blue</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="HotelManagerHeadline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textSize">@dimen/text_size_6xl</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerHeadline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textSize">@dimen/text_size_5xl</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerHeadline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textSize">@dimen/text_size_4xl</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerFormTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">@dimen/text_size_2xl</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerFormSubtitle" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">@dimen/text_size_lg</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="HotelManagerFormBody" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">@dimen/text_size_md</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="HotelManagerSectionTitle" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textSize">@dimen/text_size_base</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerCaption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">@dimen/text_size_xs</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="HotelManagerLabel" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">@dimen/text_size_sm</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Badge Styles -->
+    <style name="HotelManagerBadge">
+        <item name="android:paddingLeft">@dimen/badge_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/badge_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/badge_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/badge_padding_vertical</item>
+        <item name="android:textSize">@dimen/text_size_xs</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- List Item Styles -->
+    <style name="HotelManagerListItemTitle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">@dimen/text_size_base</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HotelManagerListItemSubtitle" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">@dimen/text_size_sm</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Aliases utilisés par certains layouts -->
+    <style name="TextAppearance.HotelManager.FormTitle" parent="HotelManagerFormTitle" />
+    <style name="TextAppearance.HotelManager.FormBody" parent="HotelManagerFormBody" />
+    <style name="TextAppearance.HotelManager.SectionTitle" parent="HotelManagerSectionTitle" />
+    <style name="Widget.HotelManager.TextInputLayout" parent="HotelManagerTextInputLayout" />
+</resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary_navy">#1A1A2E</color>
+    <color name="primary_navy_soft">#26334D</color>
+    <color name="primary_navy_lighter">#3D4A6B</color>
+    
+    <!-- Backgrounds -->
+    <color name="screen_background">#F7F9FC</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_stroke">#E0E4EB</color>
+    <color name="header_background">#1A1A2E</color>
+    <color name="surface_overlay">#F5F7FA</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6C757D</color>
+    <color name="text_tertiary">#A0A5AC</color>
+    <color name="text_hint">#B0B5BC</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_header_muted">#D7DFF0</color>
+    <!-- Alias utilisé par les layouts -->
+    <color name="header_text_muted">@color/text_header_muted</color>
+
+    
+    <!-- Accent Colors -->
+    <color name="accent_blue">#185FA5</color>
+    <color name="accent_blue_light">#3B7EC8</color>
+    <color name="accent_blue_pale">#EEF4FC</color>
+    <color name="accent_teal">#00897B</color>
+    <color name="accent_amber">#F57C00</color>
+    <color name="accent_purple">#6A1B9A</color>
+    
+    <!-- Badge / Status Colors - Green -->
+    <color name="badge_green_bg">#E8F5E9</color>
+    <color name="badge_green_text">#2E7D32</color>
+    <color name="badge_green_border">#81C784</color>
+    
+    <!-- Badge / Status Colors - Orange -->
+    <color name="badge_orange_bg">#FFF3E0</color>
+    <color name="badge_orange_text">#E65100</color>
+    <color name="badge_orange_border">#FFB74D</color>
+    
+    <!-- Badge / Status Colors - Gray -->
+    <color name="badge_gray_bg">#F5F5F5</color>
+    <color name="badge_gray_text">#616161</color>
+    <color name="badge_gray_border">#BDBDBD</color>
+    
+    <!-- Badge / Status Colors - Red -->
+    <color name="badge_red_bg">#FFEBEE</color>
+    <color name="badge_red_text">#C62828</color>
+    <color name="badge_red_border">#EF5350</color>
+    
+    <!-- Badge / Status Colors - Blue -->
+    <color name="badge_blue_bg">#E3F2FD</color>
+    <color name="badge_blue_text">#1565C0</color>
+    <color name="badge_blue_border">#42A5F5</color>
+    
+    <!-- Form Colors -->
+    <color name="input_text">#1A1A2E</color>
+    <color name="input_hint">#B0B5BC</color>
+    <color name="input_border">#D0D5DD</color>
+    <color name="input_focused">#185FA5</color>
+    <color name="input_error">#D32F2F</color>
+    <color name="input_disabled">#F5F5F5</color>
+    
+    <!-- Dividers & Borders -->
+    <color name="divider_light">#E0E4EB</color>
+    <color name="divider_medium">#D0D5DD</color>
+    
+    <!-- Neutral -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- Avatar Background -->
+    <color name="avatar_background">#E6F1FB</color>
+</resources>

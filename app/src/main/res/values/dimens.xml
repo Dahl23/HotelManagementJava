@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">20dp</dimen>
+    <dimen name="spacing_xxl">24dp</dimen>
+    <dimen name="spacing_xxxl">32dp</dimen>
+    
+    <!-- Corner Radius -->
+    <dimen name="corner_radius_sm">4dp</dimen>
+    <dimen name="corner_radius_md">8dp</dimen>
+    <dimen name="corner_radius_lg">12dp</dimen>
+    <dimen name="corner_radius_xl">16dp</dimen>
+    
+    <!-- Text Sizes -->
+    <dimen name="text_size_xs">10sp</dimen>
+    <dimen name="text_size_sm">11sp</dimen>
+    <dimen name="text_size_md">12sp</dimen>
+    <dimen name="text_size_base">13sp</dimen>
+    <dimen name="text_size_lg">14sp</dimen>
+    <dimen name="text_size_xl">16sp</dimen>
+    <dimen name="text_size_2xl">18sp</dimen>
+    <dimen name="text_size_3xl">20sp</dimen>
+    <dimen name="text_size_4xl">24sp</dimen>
+    <dimen name="text_size_5xl">28sp</dimen>
+    <dimen name="text_size_6xl">32sp</dimen>
+    
+    <!-- Component Dimensions -->
+    <dimen name="input_height">48dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    <dimen name="icon_size_sm">16dp</dimen>
+    <dimen name="icon_size_md">24dp</dimen>
+    <dimen name="icon_size_lg">32dp</dimen>
+    <dimen name="icon_size_xl">48dp</dimen>
+    <dimen name="icon_size_xxl">64dp</dimen>
+    
+    <!-- Card / List Item -->
+    <dimen name="card_elevation">0dp</dimen>
+    <dimen name="card_stroke_width">1dp</dimen>
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_height_compact">64dp</dimen>
+    
+    <!-- Header Height -->
+    <dimen name="header_height">120dp</dimen>
+    <dimen name="header_height_minimal">88dp</dimen>
+    
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+    
+    <!-- Badge -->
+    <dimen name="badge_padding_horizontal">8dp</dimen>
+    <dimen name="badge_padding_vertical">4dp</dimen>
+    <dimen name="badge_height">24dp</dimen>
+    
+    <!-- Bottom Navigation -->
+    <dimen name="bottom_nav_height">56dp</dimen>
+    
+    <!-- Max Content Width (for large screens) -->
+    <dimen name="max_content_width">600dp</dimen>
+</resources>
