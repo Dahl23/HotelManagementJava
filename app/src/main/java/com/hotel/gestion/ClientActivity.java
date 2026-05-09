@@ -45,7 +45,17 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
 
         dbHelper = new DatabaseHelper(this);
-        adapter = new ClientAdapter();
+        adapter = new ClientAdapter(new ClientAdapter.OnClientActionListener() {
+            @Override
+            public void onEditClient(Client client) {
+                showClientDialog(client);
+            }
+
+            @Override
+            public void onDeleteClient(Client client) {
+                confirmDeleteClient(client);
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.recyclerClients);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +65,7 @@ public class ClientActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fabAddClient);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        fab.setOnClickListener(v -> showAddClientDialog());
+        fab.setOnClickListener(v -> showClientDialog(null));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -84,7 +94,7 @@ public class ClientActivity extends AppCompatActivity {
         adapter.setClients(clients);
     }
 
-    private void showAddClientDialog() {
+    private void showClientDialog(Client existingClient) {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_client_form, null, false);
         AlertDialog dialog = new MaterialAlertDialogBuilder(this)
                 .setView(view)
@@ -106,6 +116,17 @@ public class ClientActivity extends AppCompatActivity {
         EditText editPassport = view.findViewById(R.id.editClientPassport);
         EditText editBirthDate = view.findViewById(R.id.editClientBirthDate);
         Button buttonSave = view.findViewById(R.id.buttonSaveClient);
+
+        if (existingClient != null) {
+            editNom.setText(existingClient.getNom());
+            editPrenom.setText(existingClient.getPrenom());
+            editEmail.setText(existingClient.getEmail());
+            editTelephone.setText(existingClient.getTelephone());
+            editAdresse.setText(existingClient.getAdresse());
+            editPassport.setText(existingClient.getNumeroPasseport());
+            editBirthDate.setText(existingClient.getDateNaissance());
+            buttonSave.setText(R.string.update_client);
+        }
 
         editBirthDate.setOnClickListener(v -> openDatePicker(editBirthDate));
 
@@ -133,9 +154,18 @@ public class ClientActivity extends AppCompatActivity {
             client.setNumeroPasseport(editPassport.getText().toString().trim());
             client.setDateNaissance(editBirthDate.getText().toString().trim());
 
-            long id = dbHelper.insertClient(client);
-            if (id > 0) {
-                Toast.makeText(this, getString(R.string.message_client_saved), Toast.LENGTH_SHORT).show();
+            boolean success;
+            if (existingClient == null) {
+                success = dbHelper.insertClient(client) > 0;
+            } else {
+                client.setId(existingClient.getId());
+                success = dbHelper.updateClient(client);
+            }
+
+            if (success) {
+                Toast.makeText(this, getString(existingClient == null
+                        ? R.string.message_client_saved
+                        : R.string.message_client_updated), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 loadClients(searchView.getQuery() == null ? "" : searchView.getQuery().toString());
             } else {
@@ -145,6 +175,22 @@ public class ClientActivity extends AppCompatActivity {
 
         dialog.setOnShowListener(dialogInterface -> configureDialogWindow(dialog));
         dialog.show();
+    }
+
+    private void confirmDeleteClient(Client client) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.delete_client_title)
+                .setMessage(getString(R.string.delete_client_message, client.getNomComplet().trim()))
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
+                    if (dbHelper.deleteClient(client.getId())) {
+                        Toast.makeText(this, R.string.message_client_deleted, Toast.LENGTH_SHORT).show();
+                        loadClients(searchView.getQuery() == null ? "" : searchView.getQuery().toString());
+                    } else {
+                        Toast.makeText(this, R.string.message_client_delete_failed, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void openDatePicker(EditText target) {

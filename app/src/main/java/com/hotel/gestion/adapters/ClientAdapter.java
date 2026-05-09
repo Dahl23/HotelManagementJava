@@ -16,6 +16,11 @@ import java.util.List;
 
 public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientViewHolder> {
     private final List<Client> clients = new ArrayList<>();
+    private final OnClientActionListener listener;
+
+    public ClientAdapter(OnClientActionListener listener) {
+        this.listener = listener;
+    }
 
     public void setClients(List<Client> newClients) {
         clients.clear();
@@ -42,11 +47,11 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
         int background;
         int textColor;
         switch (client.getStatut()) {
-            case "En séjour":
+            case "En sejour":
                 background = R.drawable.bg_badge_orange;
                 textColor = R.color.badge_orange_text;
                 break;
-            case "Archivé":
+            case "Archive":
                 background = R.drawable.bg_badge_gray;
                 textColor = R.color.badge_gray_text;
                 break;
@@ -58,6 +63,8 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
 
         holder.status.setBackgroundResource(background);
         holder.status.setTextColor(holder.itemView.getContext().getColor(textColor));
+        holder.edit.setOnClickListener(v -> listener.onEditClient(client));
+        holder.delete.setOnClickListener(v -> listener.onDeleteClient(client));
     }
 
     @Override
@@ -71,6 +78,8 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
         final TextView phone;
         final TextView passport;
         final TextView status;
+        final TextView edit;
+        final TextView delete;
 
         ClientViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +88,14 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientView
             phone = itemView.findViewById(R.id.textClientPhone);
             passport = itemView.findViewById(R.id.textClientPassport);
             status = itemView.findViewById(R.id.textClientStatus);
+            edit = itemView.findViewById(R.id.buttonEditClient);
+            delete = itemView.findViewById(R.id.buttonDeleteClient);
         }
+    }
+
+    public interface OnClientActionListener {
+        void onEditClient(Client client);
+
+        void onDeleteClient(Client client);
     }
 }

@@ -48,7 +48,17 @@ public class ChambreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chambre);
 
         dbHelper = new DatabaseHelper(this);
-        adapter = new ChambreAdapter();
+        adapter = new ChambreAdapter(new ChambreAdapter.OnChambreActionListener() {
+            @Override
+            public void onEditChambre(Chambre chambre) {
+                showRoomDialog(chambre);
+            }
+
+            @Override
+            public void onDeleteChambre(Chambre chambre) {
+                confirmDeleteRoom(chambre);
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.recyclerRooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,7 +73,7 @@ public class ChambreActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fabAddRoom);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        fab.setOnClickListener(v -> showAddRoomDialog());
+        fab.setOnClickListener(v -> showRoomDialog(null));
         chipAvailable.setOnClickListener(v -> selectFilter(DatabaseHelper.FILTER_AVAILABLE));
         chipOccupied.setOnClickListener(v -> selectFilter(DatabaseHelper.FILTER_OCCUPIED));
         chipMaintenance.setOnClickListener(v -> selectFilter(DatabaseHelper.FILTER_MAINTENANCE));
@@ -108,7 +118,7 @@ public class ChambreActivity extends AppCompatActivity {
         adapter.setChambres(chambres);
     }
 
-    private void showAddRoomDialog() {
+    private void showRoomDialog(Chambre existingRoom) {
         try {
             View view = LayoutInflater.from(this).inflate(R.layout.dialog_chambre_form, null, false);
             AlertDialog dialog = new MaterialAlertDialogBuilder(this)
@@ -145,6 +155,16 @@ public class ChambreActivity extends AppCompatActivity {
             inputRoomType.setAdapter(typeAdapter);
             inputRoomType.setText("Simple", false);
 
+            if (existingRoom != null) {
+                editNumber.setText(existingRoom.getNumero());
+                inputRoomType.setText(existingRoom.getType(), false);
+                editPrice.setText(String.valueOf(existingRoom.getPrixNuit()));
+                editCapacity.setText(String.valueOf(existingRoom.getCapacite()));
+                editEquipment.setText(existingRoom.getEquipements());
+                switchAvailable.setChecked(Chambre.STATUS_LIBRE.equals(existingRoom.getStatut()));
+                buttonSave.setText(R.string.update_room);
+            }
+
             buttonSave.setOnClickListener(v -> {
                 try {
                     clearErrors(layoutNumber, layoutType, layoutPrice, layoutCapacity, layoutEquipment);
@@ -167,9 +187,18 @@ public class ChambreActivity extends AppCompatActivity {
                     chambre.setEquipements(editEquipment.getText().toString().trim());
                     chambre.setDisponible(switchAvailable.isChecked());
 
-                    long id = dbHelper.insertChambre(chambre);
-                    if (id > 0) {
-                        Toast.makeText(this, getString(R.string.message_room_saved), Toast.LENGTH_SHORT).show();
+                    boolean success;
+                    if (existingRoom == null) {
+                        success = dbHelper.insertChambre(chambre) > 0;
+                    } else {
+                        chambre.setId(existingRoom.getId());
+                        success = dbHelper.updateChambre(chambre);
+                    }
+
+                    if (success) {
+                        Toast.makeText(this, getString(existingRoom == null
+                                ? R.string.message_room_saved
+                                : R.string.message_room_updated), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         refreshRoomData();
                     } else {
@@ -186,6 +215,22 @@ public class ChambreActivity extends AppCompatActivity {
         } catch (Exception exception) {
             Toast.makeText(this, getString(R.string.message_room_dialog_failed), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void confirmDeleteRoom(Chambre chambre) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.delete_room_title)
+                .setMessage(getString(R.string.delete_room_message, chambre.getNumero()))
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
+                    if (dbHelper.deleteChambre(chambre.getId())) {
+                        Toast.makeText(this, R.string.message_room_deleted, Toast.LENGTH_SHORT).show();
+                        refreshRoomData();
+                    } else {
+                        Toast.makeText(this, R.string.message_room_delete_failed, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void configureDialogWindow(AlertDialog dialog) {

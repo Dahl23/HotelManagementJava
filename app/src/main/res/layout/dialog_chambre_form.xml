@@ -3,222 +3,226 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:background="@color/screen_background">
+    android:background="@color/screen_background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_xl">
+        android:orientation="vertical">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_header_panel"
             android:orientation="vertical"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="18dp">
 
             <TextView
+                style="@style/TextAppearance.HotelManager.FormTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_room"
-                style="@style/TextAppearance.HotelManager.FormTitle" />
+                android:textColor="@color/white" />
 
             <TextView
+                style="@style/TextAppearance.HotelManager.FormBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:text="@string/room_form_intro"
-                style="@style/TextAppearance.HotelManager.FormBody" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
+                android:layout_marginTop="6dp"
                 android:text="@string/form_required_note"
-                android:textColor="@color/badge_blue_text"
-                android:textSize="@dimen/text_size_sm"
-                android:textStyle="bold" />
+                android:textColor="@color/header_text_muted" />
         </LinearLayout>
 
-        <!-- Section: Configuration -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_room_setup"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutRoomNumber"
-                style="@style/Widget.HotelManager.TextInputLayout"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_room_number"
-                app:helperText="Obligatoire. Ex: 101, 102, A15">
+                app:cardCornerRadius="14dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/card_stroke"
+                app:strokeWidth="1dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editRoomNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="text"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutRoomType"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_room_type"
-                app:helperText="Obligatoire. Simple, Double ou Suite"
-                app:endIconMode="dropdown_menu">
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/inputRoomType"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="none"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- Section: Tarification -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_room_pricing"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutRoomPrice"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_room_price"
-                app:helperText="Obligatoire. Montant par nuit en FBU"
-                app:prefixText="FBU ">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editRoomPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="numberDecimal"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutRoomCapacity"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_room_capacity"
-                app:helperText="Obligatoire. Nombre maximum de personnes"
-                app:suffixText=" pers.">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editRoomCapacity"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="number"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- Section: Détails -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_room_details"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutRoomEquipment"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_lg"
-                android:hint="@string/hint_room_equipment"
-                app:helperText="@string/helper_room_equipment">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editRoomEquipment"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:minLines="3"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchRoomAvailable"
+                    <TextView
+                        style="@style/TextAppearance.HotelManager.SectionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section_room_setup" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutRoomNumber"
+                        style="@style/Widget.HotelManager.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/hint_room_number">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editRoomNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:inputType="textCapCharacters"
+                            android:textColor="@color/input_text"
+                            android:textSize="@dimen/text_size_base" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutRoomType"
+                        style="@style/Widget.HotelManager.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="@string/hint_room_type"
+                        app:endIconMode="dropdown_menu">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/inputRoomType"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:inputType="none"
+                            android:textColor="@color/input_text"
+                            android:textSize="@dimen/text_size_base" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Disponible à la réservation"
-                android:textColor="@color/text_primary"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/card_stroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/TextAppearance.HotelManager.SectionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section_room_pricing" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutRoomPrice"
+                        style="@style/Widget.HotelManager.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/hint_room_price"
+                        app:prefixText="FBU ">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editRoomPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/input_text"
+                            android:textSize="@dimen/text_size_base" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutRoomCapacity"
+                        style="@style/Widget.HotelManager.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="@string/hint_room_capacity"
+                        app:suffixText=" pers.">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editRoomCapacity"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/input_height"
+                            android:inputType="number"
+                            android:textColor="@color/input_text"
+                            android:textSize="@dimen/text_size_base" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/card_stroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/TextAppearance.HotelManager.SectionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section_room_details" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutRoomEquipment"
+                        style="@style/Widget.HotelManager.TextInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/hint_room_equipment"
+                        app:helperText="@string/helper_room_equipment">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editRoomEquipment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:minLines="3"
+                            android:textColor="@color/input_text"
+                            android:textSize="@dimen/text_size_base" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switchRoomAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:checked="true"
+                        android:minHeight="48dp"
+                        android:paddingVertical="8dp"
+                        android:text="@string/hint_room_available"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_base"
+                        app:thumbTint="@color/accent_blue"
+                        app:trackTint="@color/input_border" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSaveRoom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="16dp"
+                android:text="@string/save_room"
                 android:textSize="@dimen/text_size_base"
-                android:paddingVertical="@dimen/spacing_md"
-                app:thumbTint="@color/accent_blue"
-                app:trackTint="@color/input_border" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:text="@string/helper_room_status"
-                style="@style/TextAppearance.HotelManager.FormBody" />
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
         </LinearLayout>
-
-        <!-- Action Button -->
-        <Button
-            android:id="@+id/buttonSaveRoom"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:layout_marginBottom="@dimen/spacing_xl"
-            android:background="@drawable/bg_button_primary"
-            android:text="@string/save_room"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_base"
-            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

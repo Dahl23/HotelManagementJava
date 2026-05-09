@@ -19,6 +19,11 @@ import java.util.Locale;
 
 public class ChambreAdapter extends RecyclerView.Adapter<ChambreAdapter.ChambreViewHolder> {
     private final List<Chambre> chambres = new ArrayList<>();
+    private final OnChambreActionListener listener;
+
+    public ChambreAdapter(OnChambreActionListener listener) {
+        this.listener = listener;
+    }
 
     public void setChambres(List<Chambre> newChambres) {
         chambres.clear();
@@ -62,6 +67,8 @@ public class ChambreAdapter extends RecyclerView.Adapter<ChambreAdapter.ChambreV
 
         holder.status.setBackgroundResource(background);
         holder.status.setTextColor(holder.itemView.getContext().getColor(textColor));
+        holder.edit.setOnClickListener(v -> listener.onEditChambre(chambre));
+        holder.delete.setOnClickListener(v -> listener.onDeleteChambre(chambre));
     }
 
     @Override
@@ -76,6 +83,8 @@ public class ChambreAdapter extends RecyclerView.Adapter<ChambreAdapter.ChambreV
         final TextView capacity;
         final TextView equipment;
         final TextView price;
+        final TextView edit;
+        final TextView delete;
 
         ChambreViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,6 +94,14 @@ public class ChambreAdapter extends RecyclerView.Adapter<ChambreAdapter.ChambreV
             capacity = itemView.findViewById(R.id.textRoomCapacity);
             equipment = itemView.findViewById(R.id.textRoomEquipment);
             price = itemView.findViewById(R.id.textRoomPrice);
+            edit = itemView.findViewById(R.id.buttonEditRoom);
+            delete = itemView.findViewById(R.id.buttonDeleteRoom);
         }
+    }
+
+    public interface OnChambreActionListener {
+        void onEditChambre(Chambre chambre);
+
+        void onDeleteChambre(Chambre chambre);
     }
 }

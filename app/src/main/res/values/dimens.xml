@@ -12,8 +12,8 @@
     <!-- Corner Radius -->
     <dimen name="corner_radius_sm">4dp</dimen>
     <dimen name="corner_radius_md">8dp</dimen>
-    <dimen name="corner_radius_lg">12dp</dimen>
-    <dimen name="corner_radius_xl">16dp</dimen>
+    <dimen name="corner_radius_lg">14dp</dimen>
+    <dimen name="corner_radius_xl">20dp</dimen>
     
     <!-- Text Sizes -->
     <dimen name="text_size_xs">10sp</dimen>
@@ -29,8 +29,8 @@
     <dimen name="text_size_6xl">32sp</dimen>
     
     <!-- Component Dimensions -->
-    <dimen name="input_height">48dp</dimen>
-    <dimen name="button_height">48dp</dimen>
+    <dimen name="input_height">52dp</dimen>
+    <dimen name="button_height">50dp</dimen>
     <dimen name="button_height_small">40dp</dimen>
     <dimen name="button_height_large">56dp</dimen>
     <dimen name="icon_size_sm">16dp</dimen>

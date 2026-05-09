@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@drawable/ic_nav_home"
         android:title="@string/nav_home" />
     <item
         android:id="@+id/nav_clients"
-        android:icon="@android:drawable/ic_menu_myplaces"
+        android:icon="@drawable/ic_nav_clients"
         android:title="@string/nav_clients" />
     <item
         android:id="@+id/nav_chambres"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/ic_nav_rooms"
         android:title="@string/nav_chambres" />
     <item
         android:id="@+id/nav_reservations"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_nav_reservations"
         android:title="@string/nav_reservations" />
 </menu>

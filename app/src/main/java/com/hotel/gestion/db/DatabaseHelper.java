@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "hotel_manager.db";
-    public static final int DB_VERSION = 4;
+    public static final int DB_VERSION = 5;
 
     public static final long RESULT_ROOM_UNAVAILABLE = -10L;
     public static final long RESULT_INVALID_DATES = -11L;
@@ -38,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FILTER_MAINTENANCE = Chambre.STATUS_MAINTENANCE;
 
     private static final String RESERVATION_STATUS_CONFIRMED = "confirmee";
+    private static final String RESERVATION_STATUS_CANCELLED = "annulee";
     private static final String RESERVATION_STATUS_COMPLETED = "terminee";
     private static final String CLIENT_STATUS_STAYING = "En sejour";
     private static final String CLIENT_STATUS_ARCHIVED = "Archive";
@@ -70,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "email TEXT," +
                 "telephone TEXT NOT NULL," +
                 "adresse TEXT," +
-                "numero_carte_identite TEXT NOT NULL," +
+                "numero_passeport TEXT NOT NULL," +
                 "date_naissance TEXT NOT NULL" +
                 ")");
 
@@ -81,6 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "prix_nuit REAL NOT NULL," +
                 "capacite INTEGER NOT NULL," +
                 "equipements TEXT," +
+                "disponible INTEGER NOT NULL DEFAULT 1," +
                 "statut TEXT NOT NULL DEFAULT '" + Chambre.STATUS_LIBRE + "'" +
                 ")");
 
@@ -154,7 +156,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("prix_nuit", prixNuit);
         values.put("capacite", capacite);
         values.put("equipements", equipements);
-        values.put("statut", normalizeRoomStatus(statut));
+        String normalizedStatus = normalizeRoomStatus(statut);
+        values.put("disponible", Chambre.STATUS_LIBRE.equals(normalizedStatus) ? 1 : 0);
+        values.put("statut", normalizedStatus);
         db.insert(TABLE_CHAMBRES, null, values);
     }
 
@@ -174,9 +178,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("email", safeText(client.getEmail()));
         values.put("telephone", safeText(client.getTelephone()));
         values.put("adresse", safeText(client.getAdresse()));
-        values.put("numero_carte_identite", safeText(client.getNumeroCarteIdentite()));
+        values.put("numero_passeport", safeText(client.getNumeroCarteIdentite()));
         values.put("date_naissance", safeText(client.getDateNaissance()));
         return db.insert(TABLE_CLIENTS, null, values);
+    }
+
+    public boolean updateClient(Client client) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("nom", safeText(client.getNom()));
+        values.put("prenom", safeText(client.getPrenom()));
+        values.put("email", safeText(client.getEmail()));
+        values.put("telephone", safeText(client.getTelephone()));
+        values.put("adresse", safeText(client.getAdresse()));
+        values.put("numero_passeport", safeText(client.getNumeroCarteIdentite()));
+        values.put("date_naissance", safeText(client.getDateNaissance()));
+        return db.update(TABLE_CLIENTS, values, "id = ?", new String[]{String.valueOf(client.getId())}) > 0;
+    }
+
+    public boolean deleteClient(long clientId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_CLIENTS, "id = ?", new String[]{String.valueOf(clientId)}) > 0;
     }
 
     public List<Client> getAllClients() {
@@ -196,7 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.query(
                     TABLE_CLIENTS,
                     null,
-                    "nom LIKE ? OR prenom LIKE ? OR telephone LIKE ? OR numero_carte_identite LIKE ?",
+                    "nom LIKE ? OR prenom LIKE ? OR telephone LIKE ? OR numero_passeport LIKE ?",
                     new String[]{likeValue, likeValue, likeValue, likeValue},
                     null,
                     null,
@@ -222,11 +244,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put("prix_nuit", chambre.getPrixNuit());
             values.put("capacite", chambre.getCapacite());
             values.put("equipements", safeText(chambre.getEquipements()));
-            values.put("statut", normalizeRoomStatus(chambre.getStatut()));
+            String normalizedStatus = normalizeRoomStatus(chambre.getStatut());
+            values.put("disponible", Chambre.STATUS_LIBRE.equals(normalizedStatus) ? 1 : 0);
+            values.put("statut", normalizedStatus);
             return db.insert(TABLE_CHAMBRES, null, values);
         } catch (Exception exception) {
             return -1L;
         }
+    }
+
+    public boolean updateChambre(Chambre chambre) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("numero", safeText(chambre.getNumero()));
+            values.put("type", safeText(chambre.getType()));
+            values.put("prix_nuit", chambre.getPrixNuit());
+            values.put("capacite", chambre.getCapacite());
+            values.put("equipements", safeText(chambre.getEquipements()));
+            String normalizedStatus = normalizeRoomStatus(chambre.getStatut());
+            values.put("disponible", Chambre.STATUS_LIBRE.equals(normalizedStatus) ? 1 : 0);
+            values.put("statut", normalizedStatus);
+            return db.update(TABLE_CHAMBRES, values, "id = ?", new String[]{String.valueOf(chambre.getId())}) > 0;
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    public boolean deleteChambre(long chambreId) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_CHAMBRES, "id = ?", new String[]{String.valueOf(chambreId)}) > 0;
     }
 
     public List<Chambre> getChambres(String statusFilter) {
@@ -357,6 +404,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
             ContentValues roomUpdate = new ContentValues();
+            roomUpdate.put("disponible", 0);
             roomUpdate.put("statut", isStayStarted(reservation.getDateDebut()) ? Chambre.STATUS_OCCUPEE : Chambre.STATUS_RESERVEE);
             db.update(TABLE_CHAMBRES, roomUpdate, "id = ?", new String[]{String.valueOf(chambreId)});
 
@@ -384,6 +432,94 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return services;
+    }
+
+    public List<ReservationSummary> getReservationSummaries() {
+        SQLiteDatabase db = getWritableDatabase();
+        synchronizeRoomStatuses(db);
+        List<ReservationSummary> reservations = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT r.id, r.client_id, r.chambre_id, r.date_debut, r.date_fin, r.nombre_personnes, " +
+                        "r.statut, r.montant_total, r.date_reservation, c.nom, c.prenom, ch.numero, ch.type " +
+                        "FROM " + TABLE_RESERVATIONS + " r " +
+                        "JOIN " + TABLE_CLIENTS + " c ON c.id = r.client_id " +
+                        "JOIN " + TABLE_CHAMBRES + " ch ON ch.id = r.chambre_id " +
+                        "ORDER BY r.date_debut DESC, r.id DESC",
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            ReservationSummary summary = new ReservationSummary();
+            summary.reservation = mapReservation(cursor);
+            summary.clientName = cursor.getString(cursor.getColumnIndexOrThrow("prenom")) + " "
+                    + cursor.getString(cursor.getColumnIndexOrThrow("nom"));
+            summary.roomLabel = "Ch. " + cursor.getString(cursor.getColumnIndexOrThrow("numero")) + " - "
+                    + cursor.getString(cursor.getColumnIndexOrThrow("type"));
+            reservations.add(summary);
+        }
+        cursor.close();
+        return reservations;
+    }
+
+    public boolean cancelReservationTransaction(long reservationId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.query(
+                    TABLE_RESERVATIONS,
+                    new String[]{"chambre_id", "statut"},
+                    "id = ?",
+                    new String[]{String.valueOf(reservationId)},
+                    null,
+                    null,
+                    null
+            );
+            if (!cursor.moveToFirst()) {
+                cursor.close();
+                return false;
+            }
+            long chambreId = cursor.getLong(cursor.getColumnIndexOrThrow("chambre_id"));
+            cursor.close();
+
+            ContentValues reservationUpdate = new ContentValues();
+            reservationUpdate.put("statut", RESERVATION_STATUS_CANCELLED);
+            db.update(TABLE_RESERVATIONS, reservationUpdate, "id = ?", new String[]{String.valueOf(reservationId)});
+
+            updateRoomStatusFromReservations(db, chambreId);
+            db.setTransactionSuccessful();
+            return true;
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public boolean deleteReservationTransaction(long reservationId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.query(
+                    TABLE_RESERVATIONS,
+                    new String[]{"chambre_id"},
+                    "id = ?",
+                    new String[]{String.valueOf(reservationId)},
+                    null,
+                    null,
+                    null
+            );
+            if (!cursor.moveToFirst()) {
+                cursor.close();
+                return false;
+            }
+            long chambreId = cursor.getLong(cursor.getColumnIndexOrThrow("chambre_id"));
+            cursor.close();
+
+            db.delete(TABLE_RESERVATIONS, "id = ?", new String[]{String.valueOf(reservationId)});
+            updateRoomStatusFromReservations(db, chambreId);
+            db.setTransactionSuccessful();
+            return true;
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public Map<Long, Integer> getServiceQuantitiesForReservation(long reservationId) {
@@ -489,7 +625,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(
                 "SELECT r.id, r.client_id, r.chambre_id, r.date_debut, r.date_fin, r.nombre_personnes, " +
                         "r.statut, r.montant_total, r.date_reservation, " +
-                        "c.nom, c.prenom, c.email, c.telephone, c.adresse, c.numero_carte_identite, c.date_naissance, " +
+                        "c.nom, c.prenom, c.email, c.telephone, c.adresse, c.numero_passeport, c.date_naissance, " +
                         "ch.numero, ch.type, ch.prix_nuit, ch.capacite, ch.equipements, ch.statut " +
                         "FROM " + TABLE_RESERVATIONS + " r " +
                         "JOIN " + TABLE_CLIENTS + " c ON c.id = r.client_id " +
@@ -521,7 +657,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         client.setEmail(cursor.getString(cursor.getColumnIndexOrThrow("email")));
         client.setTelephone(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
         client.setAdresse(cursor.getString(cursor.getColumnIndexOrThrow("adresse")));
-        client.setNumeroCarteIdentite(cursor.getString(cursor.getColumnIndexOrThrow("numero_carte_identite")));
+        client.setNumeroCarteIdentite(cursor.getString(cursor.getColumnIndexOrThrow("numero_passeport")));
         client.setDateNaissance(cursor.getString(cursor.getColumnIndexOrThrow("date_naissance")));
 
         Chambre chambre = new Chambre();
@@ -604,6 +740,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(TABLE_RESERVATIONS, reservationUpdate, "id = ?", new String[]{String.valueOf(reservationId)});
 
             ContentValues roomUpdate = new ContentValues();
+            roomUpdate.put("disponible", 1);
             roomUpdate.put("statut", Chambre.STATUS_LIBRE);
             db.update(TABLE_CHAMBRES, roomUpdate, "id = ?", new String[]{String.valueOf(chambreId)});
 
@@ -641,7 +778,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         client.setEmail(cursor.getString(cursor.getColumnIndexOrThrow("email")));
         client.setTelephone(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
         client.setAdresse(cursor.getString(cursor.getColumnIndexOrThrow("adresse")));
-        client.setNumeroCarteIdentite(cursor.getString(cursor.getColumnIndexOrThrow("numero_carte_identite")));
+        client.setNumeroCarteIdentite(cursor.getString(cursor.getColumnIndexOrThrow("numero_passeport")));
         client.setDateNaissance(cursor.getString(cursor.getColumnIndexOrThrow("date_naissance")));
         return client;
     }
@@ -656,6 +793,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         chambre.setEquipements(cursor.getString(cursor.getColumnIndexOrThrow("equipements")));
         chambre.setStatut(normalizeRoomStatus(cursor.getString(cursor.getColumnIndexOrThrow("statut"))));
         return chambre;
+    }
+
+    private Reservation mapReservation(Cursor cursor) {
+        Reservation reservation = new Reservation();
+        reservation.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));
+        reservation.setClientId(cursor.getLong(cursor.getColumnIndexOrThrow("client_id")));
+        reservation.setChambreId(cursor.getLong(cursor.getColumnIndexOrThrow("chambre_id")));
+        reservation.setDateDebut(cursor.getString(cursor.getColumnIndexOrThrow("date_debut")));
+        reservation.setDateFin(cursor.getString(cursor.getColumnIndexOrThrow("date_fin")));
+        reservation.setNombrePersonnes(cursor.getInt(cursor.getColumnIndexOrThrow("nombre_personnes")));
+        reservation.setStatut(cursor.getString(cursor.getColumnIndexOrThrow("statut")));
+        reservation.setMontantTotal(cursor.getDouble(cursor.getColumnIndexOrThrow("montant_total")));
+        reservation.setDateReservation(cursor.getString(cursor.getColumnIndexOrThrow("date_reservation")));
+        return reservation;
     }
 
     private String resolveClientStatus(SQLiteDatabase db, long clientId) {
@@ -780,9 +931,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (RoomStatusUpdate update : updates) {
             ContentValues values = new ContentValues();
+            values.put("disponible", Chambre.STATUS_LIBRE.equals(update.status) ? 1 : 0);
             values.put("statut", update.status);
             db.update(TABLE_CHAMBRES, values, "id = ?", new String[]{String.valueOf(update.roomId)});
         }
+    }
+
+    private void updateRoomStatusFromReservations(SQLiteDatabase db, long chambreId) {
+        Cursor roomCursor = db.query(
+                TABLE_CHAMBRES,
+                new String[]{"statut"},
+                "id = ?",
+                new String[]{String.valueOf(chambreId)},
+                null,
+                null,
+                null
+        );
+        if (!roomCursor.moveToFirst()) {
+            roomCursor.close();
+            return;
+        }
+        String currentStatus = normalizeRoomStatus(roomCursor.getString(roomCursor.getColumnIndexOrThrow("statut")));
+        roomCursor.close();
+        if (Chambre.STATUS_MAINTENANCE.equals(currentStatus)) {
+            return;
+        }
+
+        String nextStatus;
+        if (hasCurrentConfirmedReservation(db, chambreId)) {
+            nextStatus = Chambre.STATUS_OCCUPEE;
+        } else if (hasFutureConfirmedReservation(db, chambreId)) {
+            nextStatus = Chambre.STATUS_RESERVEE;
+        } else {
+            nextStatus = Chambre.STATUS_LIBRE;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("disponible", Chambre.STATUS_LIBRE.equals(nextStatus) ? 1 : 0);
+        values.put("statut", nextStatus);
+        db.update(TABLE_CHAMBRES, values, "id = ?", new String[]{String.valueOf(chambreId)});
     }
 
     private boolean hasCurrentConfirmedReservation(SQLiteDatabase db, long chambreId) {
@@ -854,5 +1041,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         public double roomTotal;
         public double serviceTotal;
         public double grandTotal;
+    }
+
+    public static class ReservationSummary {
+        public Reservation reservation;
+        public String clientName;
+        public String roomLabel;
     }
 }

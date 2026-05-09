@@ -14,10 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.hotel.gestion.adapters.ReservationAdapter;
 import com.hotel.gestion.db.DatabaseHelper;
 import com.hotel.gestion.models.Chambre;
 import com.hotel.gestion.models.Client;
@@ -42,6 +45,7 @@ public class ReservationActivity extends AppCompatActivity {
     private TextView textSummaryRoomTotal;
     private TextView textSummaryServiceTotal;
     private TextView textSummaryEstimatedTotal;
+    private ReservationAdapter reservationAdapter;
     private final List<Client> clients = new ArrayList<>();
     private final List<Chambre> chambres = new ArrayList<>();
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -66,6 +70,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         Button buttonConfirm = findViewById(R.id.buttonConfirmReservation);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        RecyclerView recyclerReservations = findViewById(R.id.recyclerReservations);
 
         Calendar arrival = Calendar.getInstance();
         Calendar departure = Calendar.getInstance();
@@ -76,6 +81,30 @@ public class ReservationActivity extends AppCompatActivity {
         textArrival.setOnClickListener(v -> openDatePicker(textArrival));
         textDeparture.setOnClickListener(v -> openDatePicker(textDeparture));
         buttonConfirm.setOnClickListener(v -> createReservation());
+        reservationAdapter = new ReservationAdapter(new ReservationAdapter.OnReservationActionListener() {
+            @Override
+            public void onServices(Reservation reservation) {
+                openServiceActivity(reservation.getId());
+            }
+
+            @Override
+            public void onInvoice(Reservation reservation) {
+                openInvoiceActivity(reservation.getId());
+            }
+
+            @Override
+            public void onCancel(Reservation reservation) {
+                confirmCancelReservation(reservation);
+            }
+
+            @Override
+            public void onDelete(Reservation reservation) {
+                confirmDeleteReservation(reservation);
+            }
+        });
+        recyclerReservations.setLayoutManager(new LinearLayoutManager(this));
+        recyclerReservations.setNestedScrollingEnabled(false);
+        recyclerReservations.setAdapter(reservationAdapter);
 
         editPeople.addTextChangedListener(new SimpleTextWatcher(() -> {
             layoutPeople.setError(null);
@@ -83,12 +112,14 @@ public class ReservationActivity extends AppCompatActivity {
         }));
         setupBottomNavigation(bottomNavigationView, R.id.nav_reservations);
         safeLoadSelectionData();
+        loadReservations();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         safeLoadSelectionData();
+        loadReservations();
     }
 
     private void safeLoadSelectionData() {
@@ -238,6 +269,8 @@ public class ReservationActivity extends AppCompatActivity {
             long result = dbHelper.createReservationTransaction(reservation);
             if (result > 0) {
                 Toast.makeText(this, getString(R.string.message_reservation_saved), Toast.LENGTH_SHORT).show();
+                safeLoadSelectionData();
+                loadReservations();
                 showReservationSuccessDialog(result);
                 return;
             }
@@ -276,6 +309,56 @@ public class ReservationActivity extends AppCompatActivity {
         } catch (Exception exception) {
             showErrorToast(getString(R.string.message_unexpected_error));
         }
+    }
+
+    private void openInvoiceActivity(long reservationId) {
+        try {
+            Intent intent = new Intent(this, FactureActivity.class);
+            intent.putExtra(FactureActivity.EXTRA_RESERVATION_ID, reservationId);
+            startActivity(intent);
+        } catch (Exception exception) {
+            showErrorToast(getString(R.string.message_unexpected_error));
+        }
+    }
+
+    private void loadReservations() {
+        if (reservationAdapter != null) {
+            reservationAdapter.setReservations(dbHelper.getReservationSummaries());
+        }
+    }
+
+    private void confirmCancelReservation(Reservation reservation) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.cancel_reservation_title)
+                .setMessage(R.string.cancel_reservation_message)
+                .setPositiveButton(R.string.action_cancel, (dialog, which) -> {
+                    if (dbHelper.cancelReservationTransaction(reservation.getId())) {
+                        Toast.makeText(this, R.string.message_reservation_cancelled, Toast.LENGTH_SHORT).show();
+                        safeLoadSelectionData();
+                        loadReservations();
+                    } else {
+                        showErrorToast(getString(R.string.message_reservation_failed));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void confirmDeleteReservation(Reservation reservation) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.delete_reservation_title)
+                .setMessage(R.string.delete_reservation_message)
+                .setPositiveButton(R.string.action_delete, (dialog, which) -> {
+                    if (dbHelper.deleteReservationTransaction(reservation.getId())) {
+                        Toast.makeText(this, R.string.message_reservation_deleted, Toast.LENGTH_SHORT).show();
+                        safeLoadSelectionData();
+                        loadReservations();
+                    } else {
+                        showErrorToast(getString(R.string.message_reservation_failed));
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private void showErrorToast(String message) {
