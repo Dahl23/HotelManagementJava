@@ -3,237 +3,198 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:background="@color/screen_background">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/spacing_xl">
+        android:padding="20dp">
 
-        <!-- Header -->
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_client"
+            style="@style/TextAppearance.HotelManager.FormTitle" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:layout_marginTop="6dp"
+            android:text="@string/client_form_intro"
+            style="@style/TextAppearance.HotelManager.FormBody" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_client"
-                style="@style/TextAppearance.HotelManager.FormTitle" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:text="@string/client_form_intro"
-                style="@style/TextAppearance.HotelManager.FormBody" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/form_required_note"
-                android:textColor="@color/badge_blue_text"
-                android:textSize="@dimen/text_size_sm"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Section: Identité -->
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:layout_marginTop="10dp"
+            android:text="@string/form_required_note"
+            android:textColor="@color/accent_blue"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_identity"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
+        <EditText
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientNom"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_nom"
-                app:helperText="Obligatoire">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/section_identity"
+            style="@style/TextAppearance.HotelManager.SectionTitle" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientNom"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="textCapWords"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientPrenom"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_prenom"
-                app:helperText="Obligatoire">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientPrenom"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="textCapWords"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- Section: Coordonnées -->
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientNom"
+            style="@style/Widget.HotelManager.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:layout_marginTop="12dp"
+            android:hint="@string/hint_nom">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_contact"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientTelephone"
-                style="@style/Widget.HotelManager.TextInputLayout"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientNom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_telephone"
-                app:helperText="Obligatoire. Exemple : +243975123456">
+                android:inputType="textCapWords"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientTelephone"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="phone"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientEmail"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_email"
-                app:helperText="Optionnel">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientAdresse"
-                style="@style/Widget.HotelManager.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_adresse"
-                app:helperText="Optionnel">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientAdresse"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="textPostalAddress"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- Section: Documents -->
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientPrenom"
+            style="@style/Widget.HotelManager.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/card_background"
-            android:padding="@dimen/spacing_lg"
-            app:cardCornerRadius="@dimen/corner_radius_lg"
-            android:layout_marginBottom="@dimen/spacing_lg">
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_prenom">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section_documents"
-                style="@style/TextAppearance.HotelManager.SectionTitle"
-                android:layout_marginBottom="@dimen/spacing_lg" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientPassport"
-                style="@style/Widget.HotelManager.TextInputLayout"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientPrenom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_md"
-                android:hint="@string/hint_passport"
-                app:helperText="Obligatoire. Numéro de passeport">
+                android:inputType="textCapWords"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientPassport"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:inputType="text"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/section_contact"
+            style="@style/TextAppearance.HotelManager.SectionTitle" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutClientBirthDate"
-                style="@style/Widget.HotelManager.TextInputLayout"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientEmail"
+            style="@style/Widget.HotelManager.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/hint_email"
+            app:helperText="Optionnel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_birth_date"
-                app:helperText="Obligatoire. Cliquez pour sélectionner">
+                android:inputType="textEmailAddress"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editClientBirthDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/input_height"
-                    android:clickable="true"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:textColor="@color/input_text"
-                    android:textSize="@dimen/text_size_base" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientTelephone"
+            style="@style/Widget.HotelManager.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_telephone"
+            app:helperText="Exemple : +243 ou +250">
 
-        <!-- Action Button -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientTelephone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientAdresse"
+            style="@style/Widget.HotelManager.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_adresse"
+            app:helperText="Optionnel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientAdresse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/section_documents"
+            style="@style/TextAppearance.HotelManager.SectionTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientPassport"
+            style="@style/Widget.HotelManager.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/hint_passport"
+            app:helperText="Reference unique du voyageur">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientPassport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutClientBirthDate"
+            style="@style/Widget.HotelManager.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_birth_date"
+            app:helperText="@string/helper_birth_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editClientBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:inputType="none"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/buttonSaveClient"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/spacing_lg"
-            android:layout_marginBottom="@dimen/spacing_xl"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_button_primary"
             android:text="@string/save_client"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_base"
-            android:textStyle="bold" />
+            android:textSize="13sp" />
     </LinearLayout>
 </ScrollView>
